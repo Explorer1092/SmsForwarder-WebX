@@ -11,9 +11,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask_celery import celery_init_app
 import os
 import pytz
+
+# 检查是否启用了简单模式（不使用Celery）
+SIMPLE_MODE = os.environ.get("SIMPLE_MODE", "False") == "True"
+
+# 如果不是简单模式，则导入Celery相关模块
+if not SIMPLE_MODE:
+    from flask_celery import celery_init_app
 
 app = Flask(__name__)
 api = Api()
@@ -71,13 +77,15 @@ def create_app():
         db.create_all()
     migrate = Migrate(app, db)
 
-    app.config.from_mapping(
-        CELERY=dict(
-            broker_url=os.environ.get("CELERY_BROKER_URI"),
-            result_backend=os.environ.get("CELERY_RESULT_BACKEND"),
-            task_ignore_result=True,
-        ),
-    )
-    celery_app = celery_init_app(app)
+    # 只有在非简单模式下才配置Celery
+    if not SIMPLE_MODE:
+        app.config.from_mapping(
+            CELERY=dict(
+                broker_url=os.environ.get("CELERY_BROKER_URI"),
+                result_backend=os.environ.get("CELERY_RESULT_BACKEND"),
+                task_ignore_result=True,
+            ),
+        )
+        celery_app = celery_init_app(app)
 
     return app, api

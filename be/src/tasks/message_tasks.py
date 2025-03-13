@@ -4,7 +4,7 @@
 @File: message_tasks.py
 """
 
-from celery import shared_task
+import os
 from app import db, config
 from model.conversation import Conversation
 from model.line import Line, LineType
@@ -12,6 +12,14 @@ from model.message import Message, MessageType, MessageStatus
 import requests
 from datetime import datetime
 import logging
+from tasks.task_executor import task_or_direct
+
+# 检查是否启用了简单模式（不使用Celery）
+SIMPLE_MODE = os.environ.get("SIMPLE_MODE", "False") == "True"
+
+# 如果不是简单模式，则导入Celery相关模块
+if not SIMPLE_MODE:
+    from celery import shared_task
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +30,7 @@ def detect_line_type(ua: str) -> str:
     return LineType.UNKNOWN
 
 
-@shared_task()
+@task_or_direct
 def handle_receive_message(args: dict) -> None:
     sim_slot = args['card_slot'].split('_')[0][-1]
     line_number = args['card_slot'].split('_')[-1]
@@ -80,7 +88,7 @@ def handle_receive_message(args: dict) -> None:
         logger.error(f"Failed to save message: {e}")
 
 
-@shared_task()
+@task_or_direct
 def handle_send_message(args: dict) -> None:
     message_id = args['message_id']
     sim_slot = args['sim_slot']

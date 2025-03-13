@@ -1,10 +1,58 @@
-# rabbit mq
+version: '3'
+
 services:
-  rabbitmq:
-    image: rabbitmq:3
+  # 消息队列
+  # rabbitmq:
+  #   image: rabbitmq:3
+  #   ports:
+  #     - "5672:5672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: smsforwarder
+  #     RABBITMQ_DEFAULT_PASS: smsforwarder
+  #     RABBITMQ_DEFAULT_VHOST: smsforwarder
+  #   networks:
+  #     - smsforwarder-network
+
+  # 后端服务
+  backend:
+    build:
+      context: ./be
+      dockerfile: Dockerfile
     ports:
-      - "5672:5672"
+      - "8000:8000"
     environment:
-      RABBITMQ_DEFAULT_USER: smsforwarder
-      RABBITMQ_DEFAULT_PASS: smsforwarder
-      RABBITMQ_DEFAULT_VHOST: smsforwarder
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=smsforwarder
+      - RABBITMQ_PASS=smsforwarder
+      - RABBITMQ_VHOST=smsforwarder
+      - SIMPLE_MODE=True
+      - TIMEZONE=Asia/Shanghai
+      - SQLALCHEMY_DATABASE_URI=sqlite:////app/data/smsforwarder.db
+      - DB_URI=sqlite:////app/data/smsforwarder.db
+      - BACKEND_TOKEN=BACKEND_TOKEN
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin
+      - SECRET_KEY=JWT_SECRET_KEY
+      - DEBUG=True  # 启用简单模式，不依赖消息队列
+    volumes:
+      - ./data:/app/data
+    networks:
+      - smsforwarder-network
+
+  # 前端服务
+  frontend:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:8000
+    networks:
+      - smsforwarder-network
+
+networks:
+  smsforwarder-network:
+    driver: bridge

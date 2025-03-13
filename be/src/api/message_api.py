@@ -10,6 +10,7 @@ from flask import request
 from flask_restx import Resource, reqparse
 from app import api, config
 from tasks.message_tasks import handle_receive_message
+from tasks.task_executor import TaskExecutor
 
 
 @api.route('/api/v1/message')
@@ -35,7 +36,7 @@ class Message_API(Resource):
         if args['token'] != config['BACKEND_TOKEN']:
             return {'message': 'Invalid token'}, 401
 
-        handle_receive_message.delay({
+        task_args = {
             "peer_number": args['from'],
             "content": args['content'],
             "timestamp": args['timestamp'],
@@ -44,6 +45,9 @@ class Message_API(Resource):
             "receive_time": args['receive_time'],
             "remote_addr": request.remote_addr,
             "user_agent": request.user_agent.string
-        })
+        }
+        
+        # 使用TaskExecutor执行任务，它会根据简单模式开关决决定是直接执行还是通过Celery执行
+        TaskExecutor.execute_task(handle_receive_message, task_args)
 
         return {'message': 'success'}, 200

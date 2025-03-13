@@ -7,14 +7,13 @@
 from datetime import datetime
 from flask_jwt_extended import jwt_required
 
-from datetime import datetime
-
 from flask_restx import Resource, reqparse
 from app import api, db, config
 from model.conversation import Conversation
 from model.line import Line
 from model.message import Message, MessageStatus, MessageType
 from tasks.message_tasks import handle_send_message
+from tasks.task_executor import TaskExecutor
 
 
 @api.route('/api/v1/conversation')
@@ -165,13 +164,16 @@ class Conversation_API(Resource):
             api.logger.error(F'Failed to create message: {str(e)}')
             return {'message': str(e)}, 500
 
-        handle_send_message.delay({
+        task_args = {
             'message_id': message.id,
             'sim_slot': line.sim_slot,
             'phone_numbers': conversation.peer_number,
             'msg_content': message.content,
             'addr': line.addr
-        })
+        }
+        
+        # 使用TaskExecutor执行任务，它会根据简单模式开关决决定是直接执行还是通过Celery执行
+        TaskExecutor.execute_task(handle_send_message, task_args)
 
         return {
             'message_id': message.id,
