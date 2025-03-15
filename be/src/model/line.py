@@ -28,6 +28,7 @@ class Line(db.Model):
     device_mark = Column(String(255), nullable=False)
     # send api addr for device
     addr = Column(String(255), nullable=False)
+    description = Column(String(255), nullable=True)
     conversations = relationship(
         "Conversation",
         back_populates="line",
@@ -45,5 +46,6 @@ class Line(db.Model):
             'number': self.number,
             'sim_slot': self.sim_slot,
             'device_mark': self.device_mark,
-            'addr': self.addr
+            'addr': self.addr,
+            'description': self.description
         }

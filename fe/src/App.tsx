@@ -7,6 +7,8 @@ import NewConversation from './components/NewConversation';
 import LineList from './components/LineList';
 import './styles/App.css';
 import LineComponent from './components/Line';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import Config from './components/Config';
 
 const App: React.FC = () => {
   return (
@@ -18,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/line/:lineId" element={<LineComponent />} />
         <Route path="/conversation/new" element={<NewConversation />} />
         <Route path="/conversation/:conversationId" element={<MessageList />} />
+        <Route path="/config" element={<Config />} />
       </Routes>
     </Router>
   );

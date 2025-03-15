@@ -267,3 +267,33 @@ export const deleteConversation = async (conversationId: string) => {
     throw new Error('Error deleting conversation.');
   }
 };
+
+export const fetchConfigToken = async () => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    redirectToLogin();
+    throw new Error('No access token found');
+  }
+  
+  try {
+    const response = await axios.get(
+      `${BACKEND_URL}/api/v1/token`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    if (
+      (err as any).response && (
+        (err as any).response.status === 401 ||
+        (err as any).response.status === 422
+      )
+    ) {
+      redirectToLogin();
+    }
+    throw new Error('Error fetching config token.');
+  }
+};

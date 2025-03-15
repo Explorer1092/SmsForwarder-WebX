@@ -1,0 +1,67 @@
+{
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "search": "Search",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "refresh": "Refresh",
+    "copy": "Copy"
+  },
+  "conversation": {
+    "title": "Conversations",
+    "new": "New Conversation",
+    "search": "Search conversations",
+    "empty": "No conversations found"
+  },
+  "message": {
+    "title": "Messages",
+    "send": "Send",
+    "reply": "Reply",
+    "forward": "Forward",
+    "content": "Message content",
+    "empty": "No messages found"
+  },
+  "line": {
+    "title": "Lines",
+    "add": "Add Line",
+    "edit": "Edit Line",
+    "name": "Line Name",
+    "type": "Line Type",
+    "number": "Phone Number",
+    "empty": "No lines found"
+  },
+  "error": {
+    "login": "Login failed. Please check your username and password.",
+    "network": "Network error. Please try again later.",
+    "unknown": "An unknown error occurred. Please try again.",
+    "copy": "Copy failed. Please try again.",
+    "token": "Failed to get token. Please try again."
+  },
+  "config": {
+    "title": "Configuration",
+    "server": "Server Configuration",
+    "webhook_url": "Webhook URL",
+    "webhook_template": "Webhook Template",
+    "url_copied": "URL copied to clipboard",
+    "template_copied": "Template copied to clipboard",
+    "client_setup": "Mobile Client Setup",
+    "client_instruction": "Please follow these steps to configure the SMS Forwarder app on your phone:",
+    "step1": "1. Install SMS Forwarder App",
+    "step1_desc": "Download and install the SMS Forwarder app from Google Play Store or the official website.",
+    "step2": "2. Open the app and grant permissions",
+    "step2_desc": "Launch the app and grant necessary permissions, including SMS reading and network access.",
+    "step3": "3. Add Webhook forwarding rule",
+    "step3_desc": "Add a new forwarding rule in the app, select Webhook type, and enter URL: {{webhookUrl}}",
+    "step4": "4. Test the configuration",
+    "step4_desc": "Send a test SMS to your phone and confirm that the message is correctly forwarded to the server."
+  }
+}

@@ -12,9 +12,12 @@
     "@types/throttle-debounce": "^5.0.2",
     "axios": "^1.7.8",
     "create-react-app": "^5.0.1",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.4",
     "prettier": "^3.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-i18next": "^15.4.1",
     "react-router-dom": "^7.0.1",
     "react-scripts": "^5.0.1",
     "serve": "^14.2.4",
@@ -40,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -8,12 +8,13 @@ from datetime import datetime
 
 from flask import request
 from flask_restx import Resource, reqparse
-from app import api, config
+from app import config
+from blueprints.api_blueprint import api
 from tasks.message_tasks import handle_receive_message
 from tasks.task_executor import TaskExecutor
 
 
-@api.route('/api/v1/message')
+@api.route('/v1/message')
 class Message_API(Resource):
     def post(self):  # this api is defined to be used in intra-service communication, so it is only protected by a plain token
         parser = reqparse.RequestParser()

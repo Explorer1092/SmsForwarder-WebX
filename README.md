@@ -1,5 +1,53 @@
 # SmsForwarder-WebX
 
+## Docker 部署
+
+### 使用预构建镜像
+
+```bash
+# 拉取最新镜像
+docker pull donjohnson630/smsforwarder-webx:latest
+
+# 运行容器
+docker run -d \
+  -p 8000:8000 \
+  -v ./data:/app/data \
+  --name smsforwarder \
+  donjohnson630/smsforwarder-webx:latest
+```
+
+### 使用 Docker Compose
+
+```bash
+# 克隆仓库
+git clone https://github.com/Explorer1092/SmsForwarder-WebX.git
+cd SmsForwarder-WebX
+
+# 启动服务
+docker-compose up -d
+```
+
+### 版本标签
+
+- `donjohnson630/smsforwarder-webx:latest` - 最新版本
+- `donjohnson630/smsforwarder-webx:vX.Y.Z` - 特定版本
+- `donjohnson630/smsforwarder-webx:backend-latest` - 仅后端服务
+- `donjohnson630/smsforwarder-webx:frontend-latest` - 仅前端服务
+
+### 配置说明
+
+首次启动时，系统会自动在 `./data/config.json` 中生成以下配置：
+
+```json
+{
+  "BACKEND_TOKEN": "自动生成的令牌",
+  "ADMIN_PASSWORD": "admin",
+  "SECRET_KEY": "自动生成的密钥"
+}
+```
+
+您可以根据需要修改这些配置。
+
 ## backend config
 
 ```sh
@@ -42,6 +90,24 @@ cd fe
 yarn install
 yarn start
 ```
+
+## 开发者信息
+
+### 构建并推送 Docker 镜像
+
+本项目使用 GitHub Actions 自动构建和推送 Docker 镜像。当您创建一个新的 Git 标签（以 `v` 开头）时，将自动触发构建流程。
+
+```bash
+# 创建新标签
+git tag v1.0.0
+
+# 推送标签到 GitHub
+git push origin v1.0.0
+```
+
+### GitHub Actions 配置
+
+在使用 GitHub Actions 自动构建之前，您需要确保 GitHub 仓库已启用 GitHub Actions 功能。系统会使用 GitHub 提供的 `GITHUB_TOKEN` 进行身份验证，无需额外配置。
 
 ## Restful API
 

@@ -29,8 +29,11 @@ import {
   editLine,
 } from '../services/api';
 import { Line } from '../interfaces/Line';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const LineComponent: React.FC = () => {
+  const { t } = useTranslation();
   const { lineId } = useParams<{ lineId: string }>();
   const [line, setLine] = useState<Line>();
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +47,7 @@ const LineComponent: React.FC = () => {
       const response = await fetchLine(lineId as string);
       setLine(response);
     } catch (err) {
-      setError('Failed to load line.');
+      setError(t('error.network'));
     }
   };
 
@@ -95,6 +98,9 @@ const LineComponent: React.FC = () => {
             }}>
             {line?.number}
           </Typography>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <LanguageSwitcher />
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }} className="box-main">
@@ -121,7 +127,7 @@ const LineComponent: React.FC = () => {
             <ListItemText
               primary={line?.id}
               className='listItem-padding'
-              secondary='Line ID'
+              secondary={t('line.name')}
             />
           </ListItem>
           <Divider />
@@ -141,7 +147,7 @@ const LineComponent: React.FC = () => {
             <ListItemText
               primary={line?.number}
               className='listItem-padding'
-              secondary='Number'
+              secondary={t('line.number')}
             />
           </ListItem>
           <ListItem
@@ -160,7 +166,7 @@ const LineComponent: React.FC = () => {
             <ListItemText
               primary={line?.device_mark}
               className='listItem-padding'
-              secondary='Device Mark'
+              secondary={t('line.type')}
             />
           </ListItem>
           <Divider />
@@ -181,7 +187,7 @@ const LineComponent: React.FC = () => {
             <ListItemText
               primary={line?.sim_slot}
               className='listItem-padding'
-              secondary='Sim Slot'
+              secondary={t('line.type')}
             />
           </ListItem>
           <ListItem
@@ -200,7 +206,7 @@ const LineComponent: React.FC = () => {
             <ListItemText
               primary={line?.addr}
               className='listItem-padding'
-              secondary='Host'
+              secondary={t('line.type')}
             />
           </ListItem>
         </List>
@@ -211,15 +217,15 @@ const LineComponent: React.FC = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            Edit {currentEditAttrDisplay}
+            {t('common.edit')} {currentEditAttrDisplay}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               {(currentEditAttr === 'sim_slot' || currentEditAttr === 'addr') && (
-                <Typography color="error">EDITING {currentEditAttrDisplay} IS DANGEROUS AND MAY DAMAGE SENDING</Typography>
+                <Typography color="error">{t('error.unknown')}</Typography>
               )}
               {(currentEditAttr === 'line_id') && (
-                <Typography color="error">ARE YOUR SURE TO DELETE LINE {currentEdit}ALL CONVERSATIONS AND MESSAGES ON THIS LINE WILL BE DELETED</Typography>
+                <Typography color="error">{t('error.unknown')}</Typography>
               )}
             </DialogContentText>
             {(currentEditAttr !== 'line_id') && (
@@ -236,15 +242,15 @@ const LineComponent: React.FC = () => {
           </DialogContent>
           <DialogActions>
             <Button variant="contained" onClick={() => setOpen(false)}>
-              CANCEL
+              {t('common.cancel')}
             </Button>
             <Button
               variant="contained"
               onClick={handleEditSave}
               autoFocus
             >
-              {(currentEditAttr !== 'line_id') && ('SAVE')}
-              {(currentEditAttr === 'line_id') && ('DELETE')}
+              {(currentEditAttr !== 'line_id') && (t('common.save'))}
+              {(currentEditAttr === 'line_id') && (t('common.delete'))}
             </Button>
           </DialogActions>
         </Dialog>

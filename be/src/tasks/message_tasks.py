@@ -40,14 +40,20 @@ def handle_receive_message(args: dict) -> None:
     if not line_number and line_type == LineType.SMSFORWARDER:
         endpoint = f"http://{addr}:5000/config/query"
         try:
-            r = requests.post(endpoint, json={})
+            r = requests.post(endpoint, json={}, timeout=(1, 3))
             if r.status_code == 200:
                 resp = r.json()
                 line_number = resp['data']['sim_info_list'][str(
                     int(sim_slot) - 1)]['number']
+        except requests.exceptions.Timeout:
+            logger.warning(f"请求设备 {addr} 超时")
+            # 继续处理，使用默认值
+        except requests.exceptions.ConnectionError:
+            logger.warning(f"无法连接到设备 {addr}")
+            # 继续处理，使用默认值
         except Exception as e:
-            logger.error(
-                f"Failed to fetch line number from device: {e}")
+            logger.error(f"请求设备时发生错误: {e}")
+            # 继续处理，使用默认值
 
     try:
         line = Line.query.filter_by(number=line_number).first()

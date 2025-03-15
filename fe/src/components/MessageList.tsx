@@ -30,8 +30,11 @@ import {
 import { parseTimeDetailed } from '../services/utils';
 import { pink, grey } from '@mui/material/colors';
 import { Message } from '../interfaces/Message';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const MessageList: React.FC = () => {
+  const { t } = useTranslation();
   const { conversationId } = useParams<{ conversationId: string }>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +64,7 @@ const MessageList: React.FC = () => {
         setStart(start + limit);
       }
     } catch (err) {
-      setError('Failed to load messages.');
+      setError(t('error.network'));
     }
   };
 
@@ -92,7 +95,7 @@ const MessageList: React.FC = () => {
         ]);
       })
       .catch(() => {
-        setError('Failed to send message.');
+        setError(t('error.network'));
       });
     setNewMessage('');
   };
@@ -129,17 +132,19 @@ const MessageList: React.FC = () => {
               via {lineNumber}
             </Typography>
           </Typography>
-          <IconButton
-            size="large"
-            aria-label="delete"
-            color="inherit"
-            onClick={() => {
-              setOpen(true);
-            }}
-            sx={{ marginLeft: 'auto' }}
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Box sx={{ marginLeft: 'auto', display: 'flex' }}>
+            <LanguageSwitcher />
+            <IconButton
+              size="large"
+              aria-label="delete"
+              color="inherit"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }} className="box-main">
@@ -158,7 +163,7 @@ const MessageList: React.FC = () => {
             next={loadMessages}
             hasMore={hasMoreMessages}
             inverse={true}
-            loader={<React.Fragment>Loading...</React.Fragment>}
+            loader={<React.Fragment>{t('common.loading')}</React.Fragment>}
             style={{ display: "flex", flexDirection: "column-reverse" }}
             scrollThreshold={'80%'}
           >
@@ -204,7 +209,7 @@ const MessageList: React.FC = () => {
         >
           <TextField
             sx={{ ml: 1, flex: 1 }}
-            label="Type a message"
+            label={t('message.content')}
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             multiline
@@ -225,17 +230,17 @@ const MessageList: React.FC = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            Delete {peerNumber} via {lineNumber}?
+            {t('common.delete')} {peerNumber} via {lineNumber}?
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Are you sure to delete this conversation?
-              <Typography color="error">THIS CANNOT BE UNDONE</Typography>
+              {t('conversation.empty')}
+              <Typography color="error">{t('common.noData')}</Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button variant="contained" onClick={() => setOpen(false)}>
-              NO
+              {t('common.cancel')}
             </Button>
             <Button
               variant="contained"
@@ -246,12 +251,12 @@ const MessageList: React.FC = () => {
                   })
                   .catch(() => {
                     setOpen(false);
-                    setError('Failed to delete conversation.');
+                    setError(t('error.network'));
                   });
               }}
               autoFocus
             >
-              YES
+              {t('common.delete')}
             </Button>
           </DialogActions>
         </Dialog>

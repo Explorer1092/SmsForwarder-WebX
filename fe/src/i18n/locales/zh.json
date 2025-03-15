@@ -1,0 +1,67 @@
+{
+  "common": {
+    "login": "登录",
+    "logout": "退出登录",
+    "username": "用户名",
+    "password": "密码",
+    "submit": "提交",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "search": "搜索",
+    "loading": "加载中...",
+    "noData": "暂无数据",
+    "refresh": "刷新",
+    "copy": "复制"
+  },
+  "conversation": {
+    "title": "会话列表",
+    "new": "新建会话",
+    "search": "搜索会话",
+    "empty": "暂无会话"
+  },
+  "message": {
+    "title": "消息",
+    "send": "发送",
+    "reply": "回复",
+    "forward": "转发",
+    "content": "消息内容",
+    "empty": "暂无消息"
+  },
+  "line": {
+    "title": "线路",
+    "add": "添加线路",
+    "edit": "编辑线路",
+    "name": "线路名称",
+    "type": "线路类型",
+    "number": "电话号码",
+    "empty": "暂无线路"
+  },
+  "error": {
+    "login": "登录失败，请检查用户名和密码。",
+    "network": "网络错误，请稍后再试。",
+    "unknown": "发生未知错误，请重试。",
+    "copy": "复制失败，请重试。",
+    "token": "获取令牌失败，请重试。"
+  },
+  "config": {
+    "title": "配置",
+    "server": "服务器配置",
+    "webhook_url": "Webhook URL",
+    "webhook_template": "Webhook 模板",
+    "url_copied": "URL 已复制到剪贴板",
+    "template_copied": "模板已复制到剪贴板",
+    "client_setup": "手机端设置",
+    "client_instruction": "请按照以下步骤在手机上配置 SMS Forwarder 应用：",
+    "step1": "1. 安装 SMS Forwarder 应用",
+    "step1_desc": "从 Google Play 商店或应用官网下载并安装 SMS Forwarder 应用。",
+    "step2": "2. 打开应用并授予权限",
+    "step2_desc": "启动应用后，授予必要的权限，包括短信读取和网络访问权限。",
+    "step3": "3. 添加 Webhook 转发规则",
+    "step3_desc": "在应用中添加新的转发规则，选择 Webhook 类型，并填入 URL: {{webhookUrl}}",
+    "step4": "4. 测试配置",
+    "step4_desc": "发送一条测试短信到您的手机，确认消息能够正确转发到服务器。"
+  }
+}

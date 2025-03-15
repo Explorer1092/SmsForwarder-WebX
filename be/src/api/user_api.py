@@ -5,11 +5,12 @@
 """
 
 from flask_restx import Resource, reqparse
-from app import api, config
+from app import config
+from blueprints.api_blueprint import api
 from flask_jwt_extended import create_access_token
 
 
-@api.route('/api/v1/login')
+@api.route('/v1/login')
 class User_API(Resource):
     def post(self):
         parser = reqparse.RequestParser()

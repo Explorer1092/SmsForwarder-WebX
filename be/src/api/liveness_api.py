@@ -5,10 +5,10 @@
 """
 
 from flask_restx import Resource
-from app import api
+from blueprints.api_blueprint import api
 
 
-@api.route('/api/v1/liveness')
+@api.route('/v1/liveness')
 class Liveness_API(Resource):
     def get(self):
         return {'message': 'Server Online'}, 200

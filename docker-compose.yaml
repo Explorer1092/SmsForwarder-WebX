@@ -15,11 +15,20 @@ services:
 
   # 后端服务
   backend:
+    image: donjohnson630/smsforwarder-webx:backend-with-ui-latest
+    # build:
+    #   context: ./be
+    #   dockerfile: Dockerfile
     build:
-      context: ./be
+      context: ./
       dockerfile: Dockerfile
+      labels:
+        - "smsforwarder=backend-with-ui"
+      platforms:
+        - linux/amd64
+        - linux/arm64
     ports:
-      - "8000:8000"
+      - "80:8000"
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USER=smsforwarder
@@ -29,10 +38,7 @@ services:
       - TIMEZONE=Asia/Shanghai
       - SQLALCHEMY_DATABASE_URI=sqlite:////app/data/smsforwarder.db
       - DB_URI=sqlite:////app/data/smsforwarder.db
-      - BACKEND_TOKEN=BACKEND_TOKEN
       - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=admin
-      - SECRET_KEY=JWT_SECRET_KEY
       - DEBUG=True  # 启用简单模式，不依赖消息队列
     volumes:
       - ./data:/app/data
@@ -40,18 +46,19 @@ services:
       - smsforwarder-network
 
   # 前端服务
-  frontend:
-    build:
-      context: ./fe
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    environment:
-      - REACT_APP_BACKEND_URL=http://backend:8000
-    networks:
-      - smsforwarder-network
+  # frontend:
+  #   image: donjohnson630/smsforwarder-webx:frontend-latest
+  #   build:
+  #     context: ./fe
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "80:3000"
+  #   depends_on:
+  #     - backend
+  #   environment:
+  #     - REACT_APP_BACKEND_URL=http://backend:8000
+  #   networks:
+  #     - smsforwarder-network
 
 networks:
   smsforwarder-network:

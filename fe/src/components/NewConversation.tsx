@@ -18,8 +18,11 @@ import SendIcon from '@mui/icons-material/Send';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { fetchLines, createConversation, handleLogout } from '../services/api';
 import { Line } from '../interfaces/Line';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const NewConversation: React.FC = () => {
+  const { t } = useTranslation();
   const [lines, setLines] = useState<Line[]>([]); // To store available lines
   const [selectedLine, setSelectedLine] = useState<string>(''); // To store the selected line
   const [number, setNumber] = useState<number | string>(''); // To store the number input
@@ -33,7 +36,7 @@ const NewConversation: React.FC = () => {
         const response = await fetchLines();
         setLines(response);
       } catch (err) {
-        setError('Failed to load available lines.');
+        setError(t('error.network'));
       }
     };
 
@@ -42,7 +45,7 @@ const NewConversation: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!selectedLine || !number || !content) {
-      setError('Please fill in all fields.');
+      setError(t('error.unknown'));
       return;
     }
 
@@ -53,7 +56,7 @@ const NewConversation: React.FC = () => {
         window.location.href = `/conversation/${response.conversation_id}`;
       }
     } catch (err) {
-      setError('Failed to create conversation.');
+      setError(t('error.network'));
     } finally {
       setLoading(false);
     }
@@ -65,16 +68,19 @@ const NewConversation: React.FC = () => {
       <AppBar>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            New Conversation
+            {t('conversation.new')}
           </Typography>
-          <IconButton
-            size="large"
-            aria-label="logout"
-            color="inherit"
-            onClick={handleLogout}
-          >
-            <LogoutIcon />
-          </IconButton>
+          <Box sx={{ display: 'flex' }}>
+            <LanguageSwitcher />
+            <IconButton
+              size="large"
+              aria-label="logout"
+              color="inherit"
+              onClick={handleLogout}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }} className="box-main">
@@ -86,7 +92,7 @@ const NewConversation: React.FC = () => {
         )}
         <Box className='input-group-padding'>
           <TextField
-            label="Peer Number"
+            label={t('line.number')}
             type="number"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
@@ -94,12 +100,12 @@ const NewConversation: React.FC = () => {
             fullWidth
           />
           <FormControl sx={{ minWidth: '150px' }}>
-            <InputLabel id="line-label">Line</InputLabel>
+            <InputLabel id="line-label">{t('line.title')}</InputLabel>
             <Select
               labelId="line-label"
               value={selectedLine}
               onChange={(e) => setSelectedLine(e.target.value)}
-              label="Line"
+              label={t('line.title')}
             >
               {lines.map((line, index) => (
                 <MenuItem key={index} value={line.id}>
@@ -116,7 +122,7 @@ const NewConversation: React.FC = () => {
       >
         <TextField
           sx={{ ml: 1, flex: 1 }}
-          label="Type a message"
+          label={t('message.content')}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           multiline

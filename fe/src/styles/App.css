@@ -52,31 +52,31 @@
 }
 
 .MuiAppBar-root {
-  background-color: #f48fb1 !important;
+  background-color: #4285F4 !important; /* Google 蓝色 */
 }
 
 .MuiButton-colorPrimary {
-  background-color: #f48fb1 !important;
+  background-color: #4285F4 !important; /* Google 蓝色 */
 }
 
 label.Mui-focused {
-  color: #f48fb1 !important;
+  color: #4285F4 !important; /* Google 蓝色 */
 }
 .MuiInput-underline:after {
-  border-bottom-color: #f48fb1 !important;
+  border-bottom-color: #4285F4 !important; /* Google 蓝色 */
 }
 .MuiFilledInput-underline:after {
-  border-bottom-color: #f48fb1 !important;
+  border-bottom-color: #4285F4 !important; /* Google 蓝色 */
 }
 .MuiOutlinedInput-root.Mui-focused fieldset {
-  border-color: #f48fb1 !important;
+  border-color: #4285F4 !important; /* Google 蓝色 */
 }
 
 .MuiCardHeader-content {
   text-align: center !important;
 }
 .MuiBottomNavigationAction-root.Mui-selected {
-  color: #f48fb1 !important;
+  color: #4285F4 !important; /* Google 蓝色 */
 }
 .MuiListItem-root {
   padding: 0 !important;

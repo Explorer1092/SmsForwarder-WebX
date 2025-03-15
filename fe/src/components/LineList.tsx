@@ -21,8 +21,11 @@ import MessageIcon from '@mui/icons-material/Message';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { fetchLines } from '../services/api';
 import { Line } from '../interfaces/Line';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const LineList: React.FC = () => {
+  const { t } = useTranslation();
   const [lines, setLines] = useState<Line[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [navi, setNavi] = useState(0);
@@ -33,7 +36,7 @@ const LineList: React.FC = () => {
       const response = await fetchLines();
       setLines(response);
     } catch (err) {
-      setError('Failed to load lines.');
+      setError(t('error.network'));
     }
   };
 
@@ -57,8 +60,11 @@ const LineList: React.FC = () => {
               transform: 'translateX(-50%)',
               textAlign: 'center',
             }}>
-            Lines
+            {t('line.title')}
           </Typography>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <LanguageSwitcher />
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" className="box-main">
@@ -109,9 +115,9 @@ const LineList: React.FC = () => {
             }
           }}
         >
-          <BottomNavigationAction label="Lines" icon={<PhoneIcon />} />
+          <BottomNavigationAction label={t('line.title')} icon={<PhoneIcon />} />
           <BottomNavigationAction
-            label="Conversations"
+            label={t('conversation.title')}
             icon={<MessageIcon />}
           />
         </BottomNavigation>

@@ -12,8 +12,11 @@ import {
   Typography,
 } from '@mui/material';
 import { handleLogin } from '../services/api';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Login: React.FC = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -30,8 +33,11 @@ const Login: React.FC = () => {
               transform: 'translateX(-50%)',
               textAlign: 'center',
             }}>
-            Welcome to SMS Web Panel
+            SMS Forwarder WebX
           </Typography>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <LanguageSwitcher />
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }} className="box-main">
@@ -45,10 +51,10 @@ const Login: React.FC = () => {
           variant="outlined"
           sx={{ minWidth: 275, maxWidth: '80%', margin: 'auto', mt: 6 }}
         >
-          <CardHeader title="Login" sx={{ margin: 'auto' }}></CardHeader>
+          <CardHeader title={t('common.login')} sx={{ margin: 'auto' }}></CardHeader>
           <CardContent>
             <TextField
-              label="Username"
+              label={t('common.username')}
               variant="outlined"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -56,7 +62,7 @@ const Login: React.FC = () => {
               fullWidth
             />
             <TextField
-              label="Password"
+              label={t('common.password')}
               type="password"
               variant="outlined"
               value={password}
@@ -71,12 +77,12 @@ const Login: React.FC = () => {
                 try {
                   await handleLogin(username, password);
                 } catch (err) {
-                  setError('Failed to login, please check your credentials.');
+                  setError(t('error.login'));
                 }
               }}
               fullWidth
             >
-              Login
+              {t('common.login')}
             </Button>
           </CardContent>
         </Card>

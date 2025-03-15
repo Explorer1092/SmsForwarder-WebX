@@ -8,12 +8,13 @@ from flask_jwt_extended import jwt_required
 
 
 from flask_restx import Resource, reqparse
-from app import api, config
+from app import config
+from blueprints.api_blueprint import api
 from model.conversation import Conversation
 from model.message import MessageStatus, Message
 
 
-@api.route('/api/v1/conversation/list')
+@api.route('/v1/conversation/list')
 class Conversation_List_API(Resource):
     @jwt_required()
     def get(self):

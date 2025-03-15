@@ -186,3 +186,7 @@ cython_debug/
 */yarn-error.log*
 */yarn.lock
 */package-lock.json
+
+# database
+*/data
+*/data/*

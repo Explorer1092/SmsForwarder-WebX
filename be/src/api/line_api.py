@@ -7,10 +7,11 @@
 from flask_restx import Resource, reqparse
 from model.line import Line
 from flask_jwt_extended import jwt_required
-from app import api, db
+from app import db
+from blueprints.api_blueprint import api
 
 
-@api.route('/api/v1/line')
+@api.route('/v1/line')
 class Line_API(Resource):
     @jwt_required()
     def get(self):

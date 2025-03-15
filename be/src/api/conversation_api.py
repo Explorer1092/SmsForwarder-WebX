@@ -8,7 +8,8 @@ from datetime import datetime
 from flask_jwt_extended import jwt_required
 
 from flask_restx import Resource, reqparse
-from app import api, db, config
+from app import db, config
+from blueprints.api_blueprint import api
 from model.conversation import Conversation
 from model.line import Line
 from model.message import Message, MessageStatus, MessageType
@@ -16,7 +17,7 @@ from tasks.message_tasks import handle_send_message
 from tasks.task_executor import TaskExecutor
 
 
-@api.route('/api/v1/conversation')
+@api.route('/v1/conversation')
 class Conversation_API(Resource):
     @jwt_required()
     def get(self):

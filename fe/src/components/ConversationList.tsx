@@ -7,25 +7,29 @@ import {
   List,
   ListItem,
   ListItemText,
-  Button,
   IconButton,
   ListItemButton,
-  Fab,
   Toolbar,
   AppBar,
   CssBaseline,
   BottomNavigation,
   BottomNavigationAction,
   Paper,
+  Tooltip,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import MessageIcon from '@mui/icons-material/Message';
 import PhoneIcon from '@mui/icons-material/Phone';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { fetchConversations } from '../services/api';
 import { parseTime } from '../services/utils';
 import { Conversation } from '../interfaces/Conversation';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const ConversationList: React.FC = () => {
+  const { t } = useTranslation();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [navi, setNavi] = useState(1);
@@ -50,7 +54,7 @@ const ConversationList: React.FC = () => {
       setConversations((prevConversations) => [...prevConversations, ...response.conversations]);
       setStart(start + limit);
     } catch (err) {
-      setError('Failed to load conversations.');
+      setError(t('error.network'));
     }
   };
 
@@ -68,6 +72,17 @@ const ConversationList: React.FC = () => {
     navigate('/conversation/new');
   };
 
+  const handleRefresh = () => {
+    setConversations([]);
+    setHasMoreConversations(true);
+    setStart(0);
+    loadConversations(true);
+  };
+
+  const handleConfigClick = () => {
+    navigate('/config');
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -80,17 +95,39 @@ const ConversationList: React.FC = () => {
               transform: 'translateX(-50%)',
               textAlign: 'center',
             }}>
-            Conversations
+            {t('conversation.title')}
           </Typography>
-          <IconButton
-            size="large"
-            aria-label="new"
-            color="inherit"
-            onClick={handleNewConversation}
-            sx={{ marginLeft: 'auto' }}
-          >
-            <AddIcon />
-          </IconButton>
+          <Box sx={{ marginLeft: 'auto', display: 'flex' }}>
+            <LanguageSwitcher />
+            <Tooltip title={t('common.refresh')}>
+              <IconButton
+                size="large"
+                aria-label="refresh"
+                color="inherit"
+                onClick={handleRefresh}
+              >
+                <RefreshIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={t('config.title')}>
+              <IconButton
+                size="large"
+                aria-label="config"
+                color="inherit"
+                onClick={handleConfigClick}
+              >
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+            <IconButton
+              size="large"
+              aria-label="new"
+              color="inherit"
+              onClick={handleNewConversation}
+            >
+              <AddIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }} className="box-main">
@@ -110,7 +147,7 @@ const ConversationList: React.FC = () => {
             dataLength={conversations.length}
             next={loadConversations}
             hasMore={hasMoreConversations}
-            loader={<text>Loading...</text>}
+            loader={<text>{t('common.loading')}</text>}
           >
             {conversations.map((conversation) => (
               <ListItem
@@ -181,9 +218,9 @@ const ConversationList: React.FC = () => {
             }
           }}
         >
-          <BottomNavigationAction label="Lines" icon={<PhoneIcon />} />
+          <BottomNavigationAction label={t('line.title')} icon={<PhoneIcon />} />
           <BottomNavigationAction
-            label="Conversations"
+            label={t('conversation.title')}
             icon={<MessageIcon />}
           />
         </BottomNavigation>
